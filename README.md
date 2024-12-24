@@ -1,7 +1,9 @@
-# JSME-typst
-【非公式】日本機械学会 Typst 用テンプレート
+# JSME-typst-Student_Graduation_Research_Presentation
+【非公式】日本機械学会 関東学生会　学生員卒業研究発表講演会 Typst 用テンプレート
 
 ## `JSME-typst`の概要
+
+> 本テンプレートは，日本機械学会のオリジナルテンプレートではなく，学生員卒業研究発表講演会用に調整されたテンプレートです．
 
 [日本機械学会オリジナルのテンプレート](https://www.jsme.or.jp/publish/transact/for-authors.html)を再現するTypst用テンプレートです．
 
@@ -9,6 +11,7 @@
 - `jsme_style.typ` : JSMEテンプレート用の設定ファイル
 - `bib_style.typ` : 参考文献の設定ファイル
 - `ris_jsme_style.typ` : RIS形式文献の設定ファイル
+- `tex_jsme_style.typ` : BibTeX形式文献の設定ファイル
 
 使用方法は，次章を参考にしてください．
 必要なTypstファイル一式は，GitHub上の本レポジトリから入手可能で，自由に改変ができます．
