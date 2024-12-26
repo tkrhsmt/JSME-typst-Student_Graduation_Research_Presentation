@@ -4,11 +4,53 @@
   author: T.Hashimoto
 -------------------------------------------------- */
 
+#let bib_s = state("bib_x", ())
+#let bib_s2 = state("bib_x2", ((), 1))
+
 //bibの初期設定
 #let bib_init(body) = {
+
+  show figure.caption: it => {
+    if it.kind != "bib"{
+      it
+    }
+  }
+
   show ref: it =>{
       if it.element.has("kind"){
         if it.element.kind == "bib"{
+
+          let now_element_num = eval(it.element.supplement.children.at(4).text)
+          bib_s.update(bib_info => {
+            let tmp = bib_info
+            if type(tmp) == array{
+              tmp.push(now_element_num)
+            }
+            tmp
+          })
+          bib_s2.update(bib_info => {
+            let tmp = bib_info
+            let output = ((), 1)
+            if type(tmp) == array{
+              if tmp.at(0).contains(now_element_num){
+                let num = 0
+                for value in tmp.at(0){
+                  if value == now_element_num{
+                    num += 1
+                    break
+                  }
+                  num += 1
+                }
+                output.at(0) = tmp.at(0)
+                output.at(1) = num
+              }else{
+                tmp.at(0).push(now_element_num)
+                output.at(0) = tmp.at(0)
+                output.at(1) = tmp.at(0).len()
+              }
+            }
+            output
+          })
 
           if it.supplement == [citet]{//citetのとき
             it.element.supplement.children.at(0) + " (" + it.element.supplement.children.at(2) + ")"
@@ -26,10 +68,11 @@
             it.element.supplement.children.at(0) + ", " + it.element.supplement.children.at(2) + ")"
           }
           else{//その他
-            let tmp = "(" + it.element.supplement.children.at(4) + ")"
-            super(tmp)
+            //let tmp = "(" + it.element.supplement.children.at(4) + ")"
+            super("(")
+            super(context bib_s2.get().at(1))
+            super(")")
           }
-
         }
         else{
           it
@@ -135,6 +178,33 @@
 
 }
 
+#let bib_add_s(arr) = {
+   bib_s.update(x => {
+    let tmp = ()
+    let arr_cpy = arr
+    let a = 0
+    let remove_arr = ()
+
+    for value in x{
+      if remove_arr.contains(value) == false{
+        arr_cpy.at(value - 1).at(6) = a
+        tmp.push(arr_cpy.at(value - 1))
+        remove_arr.push(value)
+        a += 1
+      }
+    }
+
+    let i = 1
+    for value in arr_cpy{
+      if remove_arr.contains(i) == false{
+        tmp.push(value)
+      }
+      i += 1
+    }
+    tmp
+  })
+}
+
 
 //contentに含まれる文献をfigure環境で管理し，出力する
 #let from_content_to_output(body) = {
@@ -153,14 +223,30 @@
   //文献の重複管理
   //bib_output = bib_doubling_year(bib_output)
 
+  let i = 0
+  for value in bib_output{
+    bib_output.at(i).push(i)
+    i += 1
+  }
+
+  //bib_sへ文献を代入
+  bib_add_s(bib_output)
+
+  //文献の出力
   set enum(numbering: "(1)")
+
   //set par(hanging-indent: 2em)
   let bib_num = 1
+
+
+
   for value in bib_output{
-    [+ #figure(value.at(0), kind: "bib", supplement: [#value.at(1) #value.at(2) #bib_num], numbering: "a")#value.at(3)
+
+    [+ #figure([#context bib_s.get().at(bib_num - 1).at(0)], kind: "bib", supplement: [#value.at(1) #value.at(2) #bib_num], numbering: "a")#bib_output.at(bib_num - 1).at(3)
     ]
     bib_num += 1
   }
+  linebreak()
 }
 
 //contentをstrに変換する
