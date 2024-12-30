@@ -108,6 +108,14 @@
       [],it
     )
   }
+  show math.equation.where(block: false): it => {// set inline equation space
+    hide([A])
+    let size = - measure([A]).width
+    h(size)
+    it
+    h(size)
+    hide([A])
+  }
   set math.equation(numbering: num =>
     "(" + str(num) + ")"
   )
@@ -117,9 +125,9 @@
   set ref(supplement: it=>{
     let body-func = it.body.func()
     if body-func == table{
-      [図]
-    }else if body-func == image{
       [表]
+    }else if body-func == image{
+      [図]
     }else{
       it.supplement
     }

@@ -67,6 +67,12 @@
           else if it.supplement == [citep2]{//citep 2つのうち最後
             it.element.supplement.children.at(0) + ", " + it.element.supplement.children.at(2) + ")"
           }
+          else if it.supplement == [citen]{ //citenのとき
+            it.element.supplement.children.at(0)
+            super("(")
+            super(context bib_s2.get().at(1))
+            super(")")
+          }
           else{//その他
             //let tmp = "(" + it.element.supplement.children.at(4) + ")"
             super("(")
@@ -343,4 +349,8 @@
     let tmp1 = ref(label1, supplement: "citep1")
     let tmp2 = ref(label2, supplement: "citep2")
     tmp1 + tmp2
+}
+
+#let citen(label) = {
+    ref(label, supplement: "citen")
 }
