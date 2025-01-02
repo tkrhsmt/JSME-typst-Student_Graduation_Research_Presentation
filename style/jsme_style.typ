@@ -45,7 +45,7 @@
     set align(center)
     set text(size: text_fontsize, weight: "bold", font: (english, gothic))
     if it.numbering != none{
-      counter(heading).display() + [.　]
+      context counter(heading).display() + [.　]
     }
     else{
       line(length: 100%, stroke: 0pt)
@@ -57,14 +57,14 @@
     set align(left)
     v(1em)
     set text(size: text_fontsize, weight: "bold", font: (english, gothic))
-    counter(heading).display() + [　]
+    context counter(heading).display() + [　]
     it.body
   }
   show heading.where(level: 3): it => {// if header level 3 ...
     set align(left)
     v(1em)
     set text(size: text_fontsize, weight: "bold", font: (english, gothic))
-    counter(heading).display() + [　]
+    context counter(heading).display() + [　]
     it.body
   }
   // set footnote line
