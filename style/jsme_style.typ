@@ -191,6 +191,7 @@
 
     //setting authors
     let value = 0
+    let max_value = 0
     let input_value = ()
     let input_string = ()
     while value < authors.len(){
@@ -215,7 +216,7 @@
       let check = -1
       while itr < input_value.len(){
         if authors.at(value).thanks == input_string.at(itr){
-          check = itr
+          check = input_value.at(itr)
           break
         }
         itr += 1
@@ -224,7 +225,13 @@
       if check == -1{//english_thanksの重複がない場合
           let tmp = input_value.len()
           if input_value.len() != 0{
-            tmp = calc.max(input_value.at(0)) + 1
+            tmp = -1
+            for i in input_value{
+              if i > tmp{
+                tmp = i
+              }
+            }
+            tmp = tmp + 1
           }
           input_value.push(tmp)
           input_string.push(authors.at(value).thanks)
@@ -280,7 +287,7 @@
     let now_value = -1
     while value < input_value.len(){
 
-      if now_value != input_value.at(value){
+      if now_value < input_value.at(value){
         now_value += 1
         super("*" + str(input_value.at(value)+1)) + " " + str(input_string.at(value)) + linebreak()
       }
