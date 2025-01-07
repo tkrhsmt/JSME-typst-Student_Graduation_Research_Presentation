@@ -141,7 +141,6 @@
 
   //setting strong text
   show strong: set text(font: (english, mincho), weight: "bold")
-
   body
 }
 
@@ -327,6 +326,7 @@
 
     set align(left)
     set par(leading: 0.95em, first-line-indent: 1em, spacing: 0.95em)
+    set par(justify: true)
 
     for value in body.children{
       if value != [ ]{

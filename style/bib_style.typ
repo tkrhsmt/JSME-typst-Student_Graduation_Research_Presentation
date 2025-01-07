@@ -193,7 +193,7 @@
 
     for value in x{
       if remove_arr.contains(value) == false{
-        arr_cpy.at(value - 1).at(6) = a
+        arr_cpy.at(value - 1).at(7) = a
         tmp.push(arr_cpy.at(value - 1))
         remove_arr.push(value)
         a += 1
@@ -206,6 +206,31 @@
         tmp.push(value)
       }
       i += 1
+    }
+    let valuenum = 0
+    for value in tmp{
+      let it = value.at(0)
+      let it_arr = ()
+      let output = ""
+      let num = 0
+      if value.at(6) != (){
+        for i in value.at(6){
+          it_arr.push(it.slice(num, i))
+          num = i
+        }
+        it_arr.push(it.slice(num, it.len()))
+
+        num = 0
+        for i in it_arr{
+          output += eval(i, mode: "markup")
+          if num != it_arr.len() - 1{
+            output += [#linebreak()]
+          }
+          num += 1
+        }
+        tmp.at(valuenum).at(0) = output
+      }
+      valuenum += 1
     }
     tmp
   })
@@ -303,14 +328,14 @@
 // --------------------------------------------------
 
 //手書きで文献を入力する関数
-#let bib-item(it, author: none, year: none, label: none, yomi: none, yearnum: none) = {
+#let bib-item(it, author: none, year: none, label: none, yomi: none, yearnum: none, linebreak: ()) = {
 
     let it_str = from_content_to_str(it)
-    return (it_str, author, year, label, yomi, yearnum)
+    return (it_str, author, year, label, yomi, yearnum, linebreak)
 }
 
 //ris形式で文献を出力する関数
-#let bib-ris(it, label: none, yomi: none, lang: false) = {
+#let bib-ris(it, label: none, yomi: none, lang: false, linebreak: ()) = {
 
   let it_str = from_ris_to_biblist(it, lang)
   let yomi_str = yomi
@@ -318,12 +343,13 @@
     yomi_str = it_str.at(4)
   }
 
-  return (it_str.at(0), it_str.at(2), it_str.at(3), label, yomi_str, it_str.at(1))
+  return (it_str.at(0), it_str.at(2), it_str.at(3), label, yomi_str, it_str.at(1), linebreak)
 }
 
 //tex形式で文献を出力する関数
-#let bib-tex(it, lang: false) = {
+#let bib-tex(it, lang: false, linebreak: ()) = {
   let tmp = from_tex_to_biblist(it, lang: lang)
+  tmp.push(linebreak)
   return tmp
 }
 
