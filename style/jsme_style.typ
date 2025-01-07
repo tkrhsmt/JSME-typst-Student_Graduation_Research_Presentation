@@ -235,13 +235,17 @@
           }
           input_value.push(tmp)
           input_string.push(authors.at(value).thanks)
-          [#super("*" + str(tmp+1))，]
+          [#super("*" + str(tmp+1))]
       }
       else{//english/thanksに重複がある場合
         let tmp = check
         input_value.push(tmp)
         input_string.push(authors.at(value).thanks)
-        [#super("*" + str(tmp+1))，]
+        [#super("*" + str(tmp+1))]
+      }
+
+      if (value != authors.len()-1) {
+        [，]
       }
 
       if calc.rem(value+1, 3) == 0 and authors.len()-1 != value{
